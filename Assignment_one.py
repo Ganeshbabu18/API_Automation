@@ -21,6 +21,6 @@ print(List)
 #length
 length = len(json.dumps(Response.json(), indent=4))
 print("Current length is ", length)
-assert length == 11073 ,"length doesn't match "
-print(" Validated length is ", length)
+assert length == 11073 ,"length does not match "
+print("Validated length is ", length)
 
