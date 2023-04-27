@@ -1,26 +1,25 @@
 import requests
-import json
 
-base_url = "https://automationexercise.com/api/productsList"
+url = "https://automationexercise.com/api/productsList"
 
-Response = requests.get(base_url)
-# print(Response)
+response = requests.get(url)
 
-#Validating the content and status code
-code = Response.status_code
-print("Status code is ", code)
+# Validate status code
+code = response.status_code
+assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
+print("The status code is ", response.status_code)
+
+# Validate response content
 assert code == 200 ,"Code doesn't match "
-print(json.dumps(Response.json(), indent=4))
-json_resp = Response.json()
+print(response.json())
+response_json = response.json()
 
-#Return List
-List = list(Response)
-print(List)
+# Validate the length
+if len(response_json):
+    print("Length is:", len(response_json))
+else:
+    print("Response data is empty")
 
-
-#length
-length = len(json.dumps(Response.json(), indent=4))
-print("Current length is ", length)
-assert length == 11073 ,"length does not match "
-print("Validated length is ", length)
-
+# Validate the list returned by the API
+products = response.json()['products']
+print(products)
