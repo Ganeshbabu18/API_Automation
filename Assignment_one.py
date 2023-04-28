@@ -1,25 +1,26 @@
 import requests
+import json
+import pytest
 
-url = "https://automationexercise.com/api/productsList"
+url = 'https://automationexercise.com/api/productsList'
 
-response = requests.get(url)
+def test_products_list():
+    response = requests.get(url)
 
-# Validate status code
-code = response.status_code
-assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
-print("The status code is ", response.status_code)
+    # Validate status code
+    assert response.status_code == 200, "API is not returning a 200 status code"
+    assert response.reason == "OK", "API is not returning a OK status line"
 
-# Validate response content
-assert code == 200 ,"Code doesn't match "
-print(response.json())
-response_json = response.json()
+    # Validate content
+    assert response.content
+    response_json = response.json()
+    assert "products" in response_json.keys()
 
-# Validate the length
-if len(response_json):
-    print("Length is:", len(response_json))
-else:
-    print("Response data is empty")
+    # Validate the length
+    length = response.json()
+    assert len(length) == 2
+    assert len(response_json["products"]) >= 1
 
-# Validate the list returned by the API
-products = response.json()['products']
-print(products)
+    # Validate the list returned by the API
+    products = response.json()['products']
+    print(products)
