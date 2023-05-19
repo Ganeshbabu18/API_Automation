@@ -2,27 +2,37 @@ import requests
 import json
 import pytest
 
-# Define the API endpoint URL
-url = 'https://automationexercise.com/api/productsList'
+@pytest.fixture
+def api_url():
+    return "https://automationexercise.com/api/productsList"
 
-def test_products_list():
-    response = requests.get(url)
+def test_products_list(api_url):
+    response = requests.get(api_url)
 
-    # Validate status code
-    code = response.status_code
-    assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
-    print("The status code is ", response.status_code)
-
-    # Validate content
-    assert response.content
+    # Test Case 1: List of Products returned by this API
     response_json = response.json()
     assert "products" in response_json.keys()
-    assert len(response_json["products"]) >= 1
-
-    # Validate the length
-    length = response.json()
-    assert len(length) == 2
-
-    # Validate the list returned by the API
     products = response.json()['products']
     print(products)
+
+def test_status_code(api_url):
+    response = requests.get(api_url)
+
+    # Test Case 2: Validate and assert Status code
+    assert response.status_code == 200, f"Unexpected status code: {response.status_code}"
+
+def test_content(api_url):
+
+    # Test Case 3: Validate and assert the content
+    expected_content = "Adidas"
+    response = requests.get(api_url)
+    response_content = json.loads(response.content)
+    assert response_content == expected_content
+    assert 'Adidas' in response_content
+
+def test_length(api_url):
+    response = requests.get(api_url)
+
+    # Test Case 4: Validate and assert length
+    expected_length = 34  # Replace with expected length
+    assert len(response.json()['products']) == expected_length, "Unexpected length of products list"
